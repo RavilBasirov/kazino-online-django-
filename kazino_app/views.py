@@ -3,23 +3,25 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
-
+from .models import Email
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, 'index.html')
 
-# def feedback(request):
-#     if request.method == 'POST':
-#         email_adress = request.POST.get('email')
+@csrf_exempt
+def feedback(request):
+    if request.method == 'POST':
+        email_adress = request.POST.get('email')
         
-#         if email_adress:
-#             email = models.Email(email=email_adress, send_date=timezone.now())
-#             email.save()
-#             print(f"Ещё один лох имэйл кинул: {email}")
-#             return JsonResponse({'status': 'success', 'message': 'Email получен'})
-#         else:
-#             return JsonResponse({'status': 'success', 'message': 'Email не получен'})
-#     return render(request, 'feedback.html')
+        if email_adress:
+            email = Email(email=email_adress, send_date=timezone.now())
+            email.save()
+            print(f"Ещё один лох имэйл кинул: {email}")
+            return JsonResponse({'status': 'success', 'message': 'Email получен'})
+        else:
+            return JsonResponse({'status': 'success', 'message': 'Email не получен'})
+    return render(request, 'feedback.html')
 
 def auth(request):
     return render(request, 'auth.html')
