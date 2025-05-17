@@ -9,6 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     return render(request, 'index.html')
 
+def kosti(request):
+    return render(request, 'kosti.html')
+
 @csrf_exempt
 def feedback(request):
     if request.method == 'POST':
